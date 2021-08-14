@@ -69,28 +69,18 @@ class information:
         #if user does not give spesific columns to transform it takes columns with object type
         if column_names == []:
             column_names = self.catlist
-        self.catdata = self.data
+        
         print ("Looking for: " + str(column_names))
-
-        if set(column_names).issubset(self.catdata): #checks if column_names in catdata to prevent errors
-            for i in column_names: #transforms columns to dummies with adding orijinal name plus category name
-                
-                temp_df = pd.get_dummies(self.data[i])
-                temp_columns = list(temp_df.columns)
-
-                for j in range(len(temp_columns)):
-                    temp_columns[j] = i+"_"+temp_columns[j]
-
-                temp_df.columns = temp_columns
-                print("Adding columns: ", list(temp_df.columns))
-                self.catdata = pd.concat([self.catdata, temp_df], axis=1).drop(i,axis=1)
-
-            print("Dummies entered as .catdata")
+        
+        if (set(column_names).issubset(self.catlist) & set(column_names).issubset(self.data)): #checks if column_names in catdata to prevent errors
+            
+            self.catdata = pd.get_dummies(self.data, columns=column_names, drop_first= True )    
+            print("Dummies are combined with data and saved as .catdata")
             display(self.catdata.head())
         else:
             #error message for columns
-            print("Columns do not exist in catdata you may already transfer them to dummies, please check:")
-            display(self.catdata.head())
+            print("Columns do not exist in data you may already transfer them to dummies, please check:")
+            display(self.data.head())
         
 
     def chooseYourTarget (self,column_name, hist=False ):  #returns X , y depending on your selection of column name

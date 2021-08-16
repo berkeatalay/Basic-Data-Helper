@@ -132,6 +132,7 @@ class dataClassification():
         from lightgbm import LGBMClassifier
         from catboost import CatBoostClassifier
         from sklearn.neighbors import KNeighborsClassifier
+        import matplotlib.pyplot as plt 
 
         from sklearn.metrics import classification_report, accuracy_score, f1_score
         
@@ -233,6 +234,7 @@ class dataClassification():
         zippedList = list(zip(self.acc,self.f1))
         dfObj = pd.DataFrame(zippedList, columns=['Accuracy', 'F1'], index=acc_colmns)
         dfObj.sort_values(by='F1').plot(kind = 'bar',figsize =(12,12),grid =True)
+        plt.show()
 
         
 
@@ -240,6 +242,7 @@ class dataClassification():
     def grid(self,method, params = {},ver=2,griall = False): #Belirttin method için eğer belirtirsen parametlerle yoksa normal parametlerle yapıyoruz 
         
         from sklearn.model_selection import  GridSearchCV
+       
         
         if method == 'mlp': #eğer mlp yaparsan scale ediyor datanı
             
@@ -479,6 +482,8 @@ class dataClassification():
             self.tuned_f1.append(f1_score(self.y_test,y_pred))
         
     def gridAll(self,clf_list=[]): #hepsinde grid uyguluyor
+        import matplotlib.pyplot as plt 
+        
         self.tuned_acc = []
         self.tuned_f1 = []
         if clf_list:
@@ -495,6 +500,7 @@ class dataClassification():
         accuracy = pd.DataFrame(zippedList,columns=['Tuned_Acc','Tuned_f1','Acc','F1'],
                                 index= acc_columns)
         accuracy.sort_values(by="Tuned_f1").plot(kind="barh", figsize = (12,12))
+        plt.show()
 
 class dataRegression():
     
@@ -542,6 +548,7 @@ class dataRegression():
         from lightgbm import LGBMRegressor
         from catboost import CatBoostRegressor
         from sklearn.neighbors import KNeighborsRegressor
+        import matplotlib.pyplot as plt
 
         from sklearn.metrics import classification_report, accuracy_score, mean_squared_error, r2_score
         
@@ -627,6 +634,7 @@ class dataRegression():
         accuracy.sort_values(by="RMSE",
                        axis=0,
                        ascending=True).plot(kind="barh", color="r")
+        plt.show()
     
     # Belirttin method için eğer belirtirsen parametlerle yoksa normal parametlerle yapıyoruz
     def grid(self, method, params={}, ver=2, griall=False):
@@ -880,6 +888,8 @@ class dataRegression():
             self.rmse.append(np.sqrt(mean_squared_error(self.y_test, y_pred)))
 
     def gridAll(self,clf_list=[]): #hepsinde grid uyguluyor
+
+        import matplotlib.pyplot as plt
         self.rmse = []
         if clf_list:
             acc_columns = clf_list
@@ -895,3 +905,4 @@ class dataRegression():
         accuracy.sort_values(by="Acc",
                                axis=0,
                                ascending=True).plot(kind="barh", color="r")
+        plt.show()
